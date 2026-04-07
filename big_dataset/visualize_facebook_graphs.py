@@ -20,8 +20,8 @@ import matplotlib.colors as mcolors
 import numpy as np
 
 # ── paths ──────────────────────────────────────────────────────────────────
-TAR_PATH      = "facebook.tar.gz"          # contains per-ego files
-COMBINED_PATH = "facebook_combined.txt.gz" # all edges in one file
+TAR_PATH      = "big_dataset/facebook.tar.gz"          # contains per-ego files
+COMBINED_PATH = "big_dataset/facebook_combined.txt.gz" # all edges in one file
 # ───────────────────────────────────────────────────────────────────────────
 
 
@@ -370,14 +370,14 @@ if __name__ == "__main__":
     print("=" * 60)
     plot_ego_network(TAR_PATH, ego_id="0", layout="spring", show_circles=True)
 
-    # ── 3. Full combined network ────────────────────────────────────────
-    print("=" * 60)
-    print("3/4  Combined network (top 2000 nodes by degree)")
-    print("=" * 60)
-    plot_combined_network(COMBINED_PATH, max_nodes=2000)
+    # # ── 3. Full combined network ────────────────────────────────────────
+    # print("=" * 60)
+    # print("3/4  Combined network (top 2000 nodes by degree)")
+    # print("=" * 60)
+    # plot_combined_network(COMBINED_PATH, max_nodes=2000)
 
-    # ── 4. Degree distribution ─────────────────────────────────────────
-    print("=" * 60)
-    print("4/4  Degree distribution")
-    print("=" * 60)
-    plot_degree_distribution(COMBINED_PATH)
+    # # ── 4. Degree distribution ─────────────────────────────────────────
+    # print("=" * 60)
+    # print("4/4  Degree distribution")
+    # print("=" * 60)
+    # plot_degree_distribution(COMBINED_PATH)

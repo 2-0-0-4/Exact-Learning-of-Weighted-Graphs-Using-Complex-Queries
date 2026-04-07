@@ -70,7 +70,7 @@ def reconstruct_sub_ntr(oracle, V, Wmax, D_bound):
             for v in V_list:
                 if dist_ball[u][v] < min_dist_to_A[v]:
                     D_a.add(v)
-        print(f"Center {a}: Ball size={len(ball_a)}, Cluster size={len(D_a)}")  
+        # print(f"Center {a}: Ball size={len(ball_a)}, Cluster size={len(D_a)}")  
         E_a = exhaustive_query(oracle, D_a, w_thr=1)
         recovered.update(E_a)
 

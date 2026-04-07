@@ -4,12 +4,15 @@ from oracle import Oracle
 from helper import norm_edge
 from lblr_algorithms import lbl_r
 
+# 1. Generate a benchmark graph (Karate Club)
 G = nx.karate_club_graph()
-adj = nx.to_numpy_array(G, weight='weight')
-for u, v, d in G.edges(data=True):
-    if 'weight' not in d: d['weight'] = 1
+# Assign some random weights to make it a 'Weighted' graph reconstruction
+for u, v in G.edges():
+    G[u][v]['weight'] = np.random.randint(1, 5)
 
+adj = nx.to_numpy_array(G, weight='weight')
 oracle = Oracle(adj)
+
 D_MAX = max(dict(G.degree()).values())
 W_MAX = max(d.get('weight', 1) for _, _, d in G.edges(data=True))
 

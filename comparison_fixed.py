@@ -6,7 +6,7 @@ import collections
 import time
 from oracle import Oracle
 from helper import norm_edge    
-from algorithms import lbl_r
+from lblr_algorithms import lbl_r
 from ntr_algorithms import reconstruct_ntr
 
 G = nx.karate_club_graph()
@@ -18,6 +18,11 @@ for u, v, data in G.edges(data=True):
     w = float(data.get("weight", 1.0))
     adj[u][v] = w
     adj[v][u] = w
+
+# Calculate graph parameters
+WMAX = np.max(adj)
+D_MAX = max(dict(G.degree()).values())
+TRUE_EDGES = {(u, v): float(data.get("weight", 1.0)) for u, v, data in G.edges(data=True)}
 
 
 # =============================================================================
@@ -38,14 +43,14 @@ def main():
     # --- LBL-R ---
     counted_lbl = Oracle(adj)
     t0 = time.time()
-    recovered_lbl = lbl_r(list(G.nodes()), WMAX, counted_lbl, D_MAX)
+    recovered_lbl = lbl_r(counted_lbl, list(G.nodes()), WMAX, D_MAX)
     t1 = time.time()
     lbl_correct_edges, lbl_ok = evaluate(recovered_lbl, TRUE_EDGES)
 
     # --- NT-R ---
     counted_ntr = Oracle(adj)
     t2 = time.time()
-    recovered_ntr = reconstruct_ntr(list(G.nodes()), counted_ntr, WMAX, D_MAX)
+    recovered_ntr = reconstruct_ntr(counted_ntr, list(G.nodes()), WMAX, D_MAX)
     t3 = time.time()
     ntr_correct_edges, ntr_ok = evaluate(recovered_ntr, TRUE_EDGES)
 
@@ -54,12 +59,12 @@ def main():
     print()
     print("Algorithm          | Total Composite Queries | Edges Recovered | Correct?")
     print("-------------------|--------------------------|-----------------|---------")
-    print(f"LBL-R (with thresholds) | {str(counted_lbl.total).ljust(24)} | {str(lbl_correct_edges) + '/78':<15} | {'YES' if lbl_ok else 'NO'}")
-    print(f"NT-R (traditional, no threshold) | {str(counted_ntr.total).ljust(24)} | {str(ntr_correct_edges) + '/78':<15} | {'YES' if ntr_ok else 'NO'}")
+    print(f"LBL-R (with thresholds) | {str(counted_lbl.query_count).ljust(24)} | {str(lbl_correct_edges) + '/78':<15} | {'YES' if lbl_ok else 'NO'}")
+    print(f"NT-R (traditional, no threshold) | {str(counted_ntr.query_count).ljust(24)} | {str(ntr_correct_edges) + '/78':<15} | {'YES' if ntr_ok else 'NO'}")
     print()
 
-    if counted_ntr.total > 0:
-        reduction = 100.0 * (counted_ntr.total - counted_lbl.total) / counted_ntr.total
+    if counted_ntr.query_count > 0:
+        reduction = 100.0 * (counted_ntr.query_count - counted_lbl.query_count) / counted_ntr.query_count
     else:
         reduction = 0.0
 
