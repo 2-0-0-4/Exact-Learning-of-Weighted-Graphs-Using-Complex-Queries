@@ -66,7 +66,7 @@ def generate_lblr_friendly_graph(
 
 # ── Generate benchmark graph ───────────────────────────────────────────────
 G = generate_lblr_friendly_graph(
-    num_components=100,         # 100 * 10 = 1000 nodes
+    num_components=1000,         # 1000 * 10 = 10000 nodes
     component_size=10,
     seed=42,
     weight_low=1,
