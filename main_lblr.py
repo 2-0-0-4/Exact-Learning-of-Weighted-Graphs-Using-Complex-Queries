@@ -3,13 +3,15 @@ import numpy as np
 from oracle import Oracle
 from helper import norm_edge
 from lblr_algorithms import lbl_r
+from graph_generator import generate_small_test_graph, print_graph_info
 
-G = nx.karate_club_graph()
+# 1. Generate a benchmark graph (Small disconnected with Pareto weights)
+G, metadata = generate_small_test_graph(seed=42)
+print_graph_info(G, metadata)
+
 adj = nx.to_numpy_array(G, weight='weight')
-for u, v, d in G.edges(data=True):
-    if 'weight' not in d: d['weight'] = 1
-
 oracle = Oracle(adj)
+
 D_MAX = max(dict(G.degree()).values())
 W_MAX = max(d.get('weight', 1) for _, _, d in G.edges(data=True))
 

@@ -2,29 +2,51 @@ import math
 from helper import norm_edge, sample_set, multiset_random_sample
 
 def find_connected_components(oracle, V, w_thr):
+    """
+    Implements Algorithm 2 from the paper.
+    Uses binary search to find which component each vertex belongs to.
+    Returns list of components (each component is a set of vertices).
+    """
     V_list = list(V)
     if not V_list:
         return []
+    
+    # Initialize with first vertex in its own component
     components = [set([V_list[0]])]
-    all_nodes_discovered = {V_list[0]}
-    for i in range(1, len(V_list)):
-        vi = V_list[i]
-        if oracle.qc(vi, all_nodes_discovered, w_thr) == 0:
-            new_comp = {vi}
-            components.append(new_comp)
-            all_nodes_discovered.add(vi)
+    
+    # Process remaining vertices
+    for vi in V_list[1:]:
+        # First check: is vi in any existing component?
+        union_all = set().union(*components)
+        
+        if oracle.qc(vi, union_all, w_thr) == 0:
+            # vi is isolated - belongs to new component
+            components.append(set([vi]))
         else:
+            # vi belongs to some existing component - use binary search to find which one
             lo, hi = 0, len(components) - 1
-            while lo < hi:
+            target_idx = None
+            
+            while lo <= hi:
                 mid = (lo + hi) // 2
-                left_subset_union = set().union(*components[lo:mid + 1])                
-                if oracle.qc(vi, left_subset_union, w_thr) == 1:
-                    hi = mid
+                # Test if vi is in the union of components [lo, mid]
+                left_union = set().union(*components[lo:mid + 1])
+                
+                if oracle.qc(vi, left_union, w_thr) == 1:
+                    # vi is in left half
+                    target_idx = mid
+                    hi = mid - 1
                 else:
+                    # vi is in right half
                     lo = mid + 1
             
-            components[lo].add(vi)
-            all_nodes_discovered.add(vi)
+            # Add vi to the found component
+            if target_idx is not None:
+                components[target_idx].add(vi)
+            else:
+                # Fallback: new component (shouldn't happen if oracle is correct)
+                components.append(set([vi]))
+    
     return components
 
 def exhaustive_query(oracle, V, w_thr):
@@ -135,6 +157,10 @@ def lbl_r(oracle, all_vertices, W_max, D_bound):
             else:
                 E_comp = reconstruct(oracle, comp, w_thr, D_bound)
             recovered.update(E_comp)        
+
+        # print("iteration", j+1, "w_thr", w_thr, "components", len(comps), "recovered edges so far", len(recovered))
+        # print(recovered)
+
         if all(len(c) <= small_thr for c in comps):
             break
     return recovered
