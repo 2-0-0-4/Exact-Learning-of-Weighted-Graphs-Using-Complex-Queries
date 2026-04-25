@@ -5,7 +5,9 @@ import random
 
 from oracle import Oracle
 from helper import norm_edge
+#from lblr_algorithms import lbl_r, exhaustive_query
 from lblr_algorithms import lbl_r, exhaustive_query
+
 from ntr_algorithms import reconstruct_ntr
 
 
@@ -66,11 +68,11 @@ def generate_lblr_friendly_graph(
 
 # ── Generate benchmark graph ───────────────────────────────────────────────
 G = generate_lblr_friendly_graph(
-    num_components=1000,         # 1000 * 10 = 10000 nodes
+    num_components=1000,
     component_size=10,
     seed=42,
     weight_low=1,
-    weight_high=4,
+    weight_high=30,
     extra_edges_per_component=2,
     max_degree=4
 )
@@ -120,26 +122,6 @@ results["LBL-R"] = {
     "time": t1 - t0
 }
 
-# ── 2. NT-R ────────────────────────────────────────────────────────────────
-# print("Running NT-R...")
-# oracle_ntr = Oracle(adj)
-# t0 = time.time()
-# recovered_ntr = reconstruct_ntr(oracle_ntr, all_nodes, W_MAX, D_MAX)
-# t1 = time.time()
-
-# correct_ntr = sum(
-#     1 for e, w in true_edges.items()
-#     if recovered_ntr.get(e) == w
-# )
-
-# results["NT-R"] = {
-#     "queries": oracle_ntr.query_count,
-#     "edges": len(recovered_ntr),
-#     "correct": correct_ntr,
-#     "accuracy": (correct_ntr / len(true_edges)) * 100 if len(true_edges) > 0 else 0,
-#     "time": t1 - t0
-# }
-
 # ── 3. EXHAUSTIVE-QUERY ────────────────────────────────────────────────────
 print("Running EXHAUSTIVE-QUERY...")
 oracle_exhaustive = Oracle(adj)
@@ -179,13 +161,3 @@ for algo, data in results.items():
     )
 
 print()
-
-# ── Optional: show whether LBL-R used fewer queries ───────────────────────
-lblr_q = results["LBL-R"]["queries"]
-# ntr_q = results["NT-R"]["queries"]
-exh_q = results["EXHAUSTIVE-QUERY"]["queries"]
-
-print("Query comparison summary:")
-# print(f"LBL-R < NT-R ? {lblr_q < ntr_q}")
-# print(f"LBL-R < EXHAUSTIVE-QUERY ? {lblr_q < exh_q}")
-# print(f"NT-R < EXHAUSTIVE-QUERY ? {ntr_q < exh_q}")
