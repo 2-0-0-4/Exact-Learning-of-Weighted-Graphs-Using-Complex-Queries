@@ -130,9 +130,9 @@ def run_comparison(G, graph_name="Test Graph", verbose=False):
     results['LBL-R']['over_theory_bound_ratio'] = lblr_ratio
     
     if verbose:
-        print(f"  ✓ Completed in {results['LBL-R']['time_sec']:.3f}s")
-        print(f"  ✓ Queries: {results['LBL-R']['queries']}")
-        print(f"  ✓ Accuracy: {results['LBL-R']['accuracy_pct']:.1f}%")
+        print(f"  Completed in {results['LBL-R']['time_sec']:.3f}s")
+        print(f"  Queries: {results['LBL-R']['queries']}")
+        print(f"  Accuracy: {results['LBL-R']['accuracy_pct']:.1f}%")
     
     # ── 2. EXHAUSTIVE-QUERY (Brute-force O(n²)) ────────────────────────────
     if verbose:
@@ -163,9 +163,9 @@ def run_comparison(G, graph_name="Test Graph", verbose=False):
     results['EXHAUSTIVE-QUERY']['theory_exact_match'] = (exhaustive_error == 0)
     
     if verbose:
-        print(f"  ✓ Completed in {results['EXHAUSTIVE-QUERY']['time_sec']:.3f}s")
-        print(f"  ✓ Queries: {results['EXHAUSTIVE-QUERY']['queries']}")
-        print(f"  ✓ Accuracy: {results['EXHAUSTIVE-QUERY']['accuracy_pct']:.1f}%")
+        print(f"  Completed in {results['EXHAUSTIVE-QUERY']['time_sec']:.3f}s")
+        print(f"  Queries: {results['EXHAUSTIVE-QUERY']['queries']}")
+        print(f"  Accuracy: {results['EXHAUSTIVE-QUERY']['accuracy_pct']:.1f}%")
     
     # ── Display comparison ────────────────────────────────────────────────────
     if verbose:
@@ -459,7 +459,7 @@ for test_name, _, results in summary_data:
     lblr_ok = lblr_accuracy == 100.0
     exh_ok = exh_accuracy == 100.0
     
-    status = "✓ PASS" if (lblr_ok and exh_ok) else "✗ FAIL"
+    status = "PASS" if (lblr_ok and exh_ok) else "FAIL"
     all_pass = all_pass and lblr_ok and exh_ok
     
     print(f"{test_name:<48} | LBL-R: {lblr_accuracy:>6.1f}% | Exhaustive: {exh_accuracy:>6.1f}% | {status}")
@@ -467,9 +467,9 @@ for test_name, _, results in summary_data:
 print("-" * 120)
 
 if all_pass:
-    print("\n✓ ALL TESTS PASSED - Both algorithms achieve 100% accuracy")
+    print("\n ALL TESTS PASSED - Both algorithms achieve 100% accuracy")
 else:
-    print("\n✗ SOME TESTS FAILED - Check algorithm implementations")
+    print("\n SOME TESTS FAILED - Check algorithm implementations")
 
 # ── Theory Validation Checklist ─────────────────────────────────────────────
 print("\n" + "=" * 120)
@@ -483,7 +483,7 @@ exhaustive_exact_all = all(
 
 print(
     f"Exhaustive baseline q = n(n-1)/2 exact on all tests: "
-    f"{'✓ PASS' if exhaustive_exact_all else '✗ FAIL'}"
+    f"{'PASS' if exhaustive_exact_all else 'FAIL'}"
 )
 
 scaling_points = []
@@ -517,16 +517,16 @@ if scaling_points:
     print(f"Log-log slope (LBL-R):      {lblr_slope:.3f}  [should be < Exhaustive]")
     print(f"LBL-R normalized ratio spread max/min: {ratio_spread:.3f}")
     print(
-        f"Exhaustive slope near 2.0: {'✓ PASS' if exhaustive_slope_ok else '✗ FAIL'}"
+        f"Exhaustive slope near 2.0: {'PASS' if exhaustive_slope_ok else 'FAIL'}"
     )
     print(
-        f"LBL-R slope lower than Exhaustive: {'✓ PASS' if lblr_better_slope else '✗ FAIL'}"
+        f"LBL-R slope lower than Exhaustive: {'PASS' if lblr_better_slope else 'FAIL'}"
     )
     print(
-        f"LBL-R empirically subquadratic (<2): {'✓ PASS' if lblr_subquadratic else '✗ FAIL'}"
+        f"LBL-R empirically subquadratic (<2): {'PASS' if lblr_subquadratic else 'FAIL'}"
     )
     print(
-        f"LBL-R normalized ratio non-explosive: {'✓ PASS' if lblr_ratio_stable else '✗ FAIL'}"
+        f"LBL-R normalized ratio non-explosive: {'PASS' if lblr_ratio_stable else 'FAIL'}"
     )
 else:
     print("No scaling tests found (names starting with 'Scaling graph n=').")
