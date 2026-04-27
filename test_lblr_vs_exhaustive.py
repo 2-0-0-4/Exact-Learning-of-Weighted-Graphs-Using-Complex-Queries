@@ -24,7 +24,7 @@ from datetime import datetime
 from oracle import Oracle
 from helper import norm_edge
 from lblr_algorithms import lbl_r, exhaustive_query
-from graph_generator import (
+from disc_graph_gen import (
     generate_disconnected_graph,
     print_graph_info
 )
@@ -253,7 +253,7 @@ def save_results_to_files(summary_data):
 
     return json_path, csv_path
 
-
+test_cases = []
 test_cases = [
     {
         "title": "TEST 1: SMALL DISCONNECTED GRAPH",

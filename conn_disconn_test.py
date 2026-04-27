@@ -13,7 +13,7 @@ import numpy as np
 from oracle import Oracle
 from helper import norm_edge
 from lblr_algorithms import lbl_r
-from graph_generator import generate_disconnected_graph, print_graph_info
+from disc_graph_gen import generate_disconnected_graph, print_graph_info
 from conn_graph_gen import (
     generate_connected_graph_suite,
     print_graph_info as print_conn_info,

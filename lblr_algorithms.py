@@ -54,7 +54,7 @@ def exhaustive_query(oracle, V, w_thr):
     recovered = {}
     for i in range(len(V)):
         for j in range(i + 1, len(V)):
-            w = oracle.qw(V[i], V[j])
+            w = oracle.qw(V[i], V[j], w_thr)
             if w >= w_thr and w != float('inf'):
                 recovered[norm_edge(V[i], V[j])] = w
     return recovered
@@ -66,8 +66,6 @@ def find_neighbors(oracle, V, a, w_thr):
         N_v = {u for u in V if u != v and oracle.qw(u, v, w_thr) != 0}
         N2_a.update(N_v)
     return N2_a
-import math
-from helper import sample_set, multiset_random_sample
 
 def estimated_centers(oracle, V, s, w_thr, K=2):
     V_list = list(V)

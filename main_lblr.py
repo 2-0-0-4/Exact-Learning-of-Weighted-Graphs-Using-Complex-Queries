@@ -3,7 +3,7 @@ import numpy as np
 from oracle import Oracle
 from helper import norm_edge
 from lblr_algorithms import lbl_r
-from graph_generator import generate_small_test_graph, print_graph_info
+from disc_graph_gen import generate_small_test_graph, print_graph_info
 
 # 1. Generate a benchmark graph (Small disconnected with Pareto weights)
 G, metadata = generate_small_test_graph(seed=42)
